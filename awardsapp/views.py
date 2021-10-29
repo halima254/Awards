@@ -55,3 +55,26 @@ def profile(request,username):
     projects = Projects.get_profile_pic(profile.id)
     return render(request, 'registration/profile.html',{'title':title,'profile':profile,'projects':projects,'profile_info':profile_info, 'form':form})        
     
+    
+@login_required(login_url='/accounts/login/')
+def update_profile(request):
+    profile = User.objects.get(username=request.user) 
+    try:
+        profile_info = Profile.get_by_id(profile.id)
+    except:
+        profile_info = Profile.filter_by_id(profile.id)
+        
+    if request.method =='POST':
+        form = ProfileForm(request.POST,request.FILES)
+        if form.is_valid():
+            update = form.save(comit = False)
+            update.user = request.user
+            update.save()
+            
+            
+            return redirect('profile',username=request.user)
+        
+    else:
+        form = ProfileForm()
+        
+    return render(request,'registration/update_profile.html',{'form':form,'profile_info':profile_info})                   
