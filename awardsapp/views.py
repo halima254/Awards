@@ -77,4 +77,21 @@ def update_profile(request):
     else:
         form = ProfileForm()
         
-    return render(request,'registration/update_profile.html',{'form':form,'profile_info':profile_info})                   
+    return render(request,'registration/update_profile.html',{'form':form,'profile_info':profile_info})     
+
+   
+@login_required(login_url='/accounts/login')
+def new_project(request):
+	current_user = request.user
+	if request.method == 'POST':
+		form = ProjectForm(request.POST,request.FILES)
+		if form.is_valid():
+			new_project = form.save(commit=False)
+			new_project.user = current_user
+			new_project.save()
+        
+			return redirect('index')
+	else:
+			form = ProjectForm()
+            
+	return render(request, 'project.html',{"form":form})              
