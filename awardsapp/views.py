@@ -139,3 +139,21 @@ def review_list(request):
 def review_detail(request, review_id):
     review = get_object_or_404(Review, pk=review_id)
     return render(request, 'review_detail.html', {'review': review})
+
+def search_projects(request):
+ 
+    if 'title' in request.GET and request.GET["title"]:
+
+        search_term = request.GET.get("title")
+        found_projects = Project.search_by_title(search_term)
+        message = f"{search_term}"
+        print(search_term)
+
+        context = {"found_projects":found_projects,"message":message}
+
+        return render(request, 'search.html',context)
+
+    else:
+        message = "You haven't searched for any term"
+       
+        return render(request, 'search.html',{"message":message})
