@@ -102,4 +102,34 @@ def project_details(request,id):
     reviews = Review.objects.order_by('-timestamp')
 
     context={"project":project,"reviews":reviews}
-    return render(request, 'project_details.html',context)        
+    return render(request, 'project_details.html',context)  
+
+@login_required(login_url='/accounts/login/')
+def review_project(request,project_id):
+    proj = Project.project_by_id(id=project_id)
+    project = get_object_or_404(Project, pk=project_id)
+    current_user = request.user
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            # reviews = form.save(commit=False)
+            # reviews.project = project
+            # reviews.user = current_user
+            # reviews.save()
+
+            design = form.cleaned_data['design']
+            usability = form.cleaned_data['usability']
+            content = form.cleaned_data['content']
+            review = Review()
+            review.project = project
+            review.user = current_user
+            review.design = design
+            review.usability = usability
+            review.content = content
+            review.average = (review.design + review.usability + review.content)/3
+            review.save()
+            # return redirect('index')
+            return HttpResponseRedirect(reverse('projectdetails', args=(project.id,)))
+    else:
+        form = ReviewForm()
+    return render(request, 'reviews.html', {"user":current_user,"project":proj,"form":form})      
