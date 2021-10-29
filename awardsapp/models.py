@@ -64,3 +64,25 @@ def __str__(self):
 def filter_by_id(cls,id):
     profile = Profile.objects.filter(user = id).first()
     return profile          
+
+
+class Review(models.Model):
+    REVIEW_CHOICES =(
+        (1,'1'),
+        (2,'2'),
+        (3,'3'),
+        (4,'4'),
+        (4,'5'),                            
+    )
+    
+design = models.IntegerField(choices= REVIEW_CHOICES,default =0, blank=False)
+usability = models.IntegerField(choices = REVIEW_CHOICES,default =0,blank = False)
+content = models.IntegerField(choices=REVIEW_CHOICES,default=0,blank=False)
+average =  models.DecimalField(default=1,blank=False,decimal_places=2,max_digits=40)
+project = models.ForeignKey(Project,null=True,on_delete=models.CASCADE)
+timestamp = models.DateTimeField(auto_now_add=True)
+user = models.ForeignKey(User,null=True,blank=True,on_delete=models.CASCADE)
+
+
+def __str__(self):
+    return self.user
