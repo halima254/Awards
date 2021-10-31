@@ -18,4 +18,8 @@ from django.urls import path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    url(r'', include('honors.urls')),
+    url(r'^tinymce/', include('tinymce.urls')),
+    url(r'^accounts/', include('registration.backends.simple.urls')),
+    url(r'^api-token-auth/', obtain_auth_token),
 ]

@@ -15,7 +15,7 @@ from django.utils import timezone
 
 
 class Project(models.Model):
-    title = models.Charfield(max_length =50, blank=True)
+    title = models.Charield(max_length =50, blank=True)
     image = models.ImageField(upload_to='projectimg/',default = 'NO IMAGE')
     description = HTMLField()
     link = models.URLField(blank=True)
