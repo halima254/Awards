@@ -15,11 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf.urls import url,include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'', include('honors.urls')),
-    url(r'^tinymce/', include('tinymce.urls')),
+    # url(r'^tinymce/', include('tinymce.urls')),
     url(r'^accounts/', include('registration.backends.simple.urls')),
-    url(r'^api-token-auth/', obtain_auth_token),
+    # url(r'^api-token-auth/', obtain_auth_token),
 ]
